@@ -3,19 +3,25 @@ require './lib/gilded_rose'
 describe GildedRose do
 
   subject { described_class.new }
-  vanilla_item = Item.new("vanilla item", 10, 5)
-  item_of_zero_quality = Item.new("vanilla item", 10, 0)
-  item_past_sell_in = Item.new("vanilla item", 0, 5)
-  item_of_fifty_quality = Item.new("vanilla item", 5, 50)
+  vanilla_item = Item.new(:vanilla_item, 10, 5)
+  item_of_zero_quality = Item.new(:vanilla_item, 10, 0)
+  item_past_sell_in = Item.new(:vanilla_item, 0, 5)
+  item_of_fifty_quality = Item.new(:vanilla_item, 5, 50)
   items = [vanilla_item, item_past_sell_in, item_of_fifty_quality, item_of_zero_quality]
   gilded_rose = GildedRose.new(items)
 
-  vanilla_item_2 = Item.new("vanilla item", 10, 5)
-  item_of_zero_quality_2 = Item.new("vanilla item", 10, 0)
-  item_past_sell_in_2 = Item.new("vanilla item", 0, 5)
-  item_of_fifty_quality_2 = Item.new("vanilla item", 5, 50)
+  vanilla_item_2 = Item.new(:vanilla_item, 10, 5)
+  item_of_zero_quality_2 = Item.new(:vanilla_item, 10, 0)
+  item_past_sell_in_2 = Item.new(:vanilla_item, 0, 5)
+  item_of_fifty_quality_2 = Item.new(:vanilla_item, 5, 50)
   items = [vanilla_item_2, item_past_sell_in_2, item_of_fifty_quality_2, item_of_zero_quality_2]
   gilded_rose_2 = GildedRose.new(items)
+
+  aged_brie = Item.new(:aged_brie, 10, 5)
+  sulfuras = Item.new(:sulfuras, 10, 5)
+  backstage_pass = Item.new(:backstage_pass, 10, 5)
+  conjured_item = Item.new(:conjured_item, 10, 5)
+
 
   # describe "#update_quality" do
   #   it "does not change the name" do
@@ -104,6 +110,14 @@ describe GildedRose do
     end
     it 'returns false for an item past SellIn date' do
       expect(gilded_rose.is_vanilla?(item_past_sell_in)).to eq false
+    end
+  end
+
+  context 'item has special property' do
+    describe '#is_special_item?' do
+      it 'returns true if the item has a special property' do
+        expect(gilded_rose.is_special_item?(sulfuras)).to eq true
+      end
     end
   end
 

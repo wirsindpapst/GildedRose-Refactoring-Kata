@@ -16,8 +16,12 @@ class GildedRose
 
   def apply_quality_logic
     @items.each do |item|
-      adjust_quality_of_vanilla_item(item)
+      apply_initial_routing(item)
     end
+  end
+
+  def apply_initial_routing(item)
+    is_special_item?(item) ? ( "Placeholder") : ( adjust_quality_of_vanilla_item(item))
   end
 
   def adjust_quality_of_vanilla_item(item)
@@ -26,6 +30,10 @@ class GildedRose
 
   def apply_past_sell_in_reduction_if_applicable(item)
     item.quality -= 2 if past_sell_in?(item) && !quality_is_zero?(item)
+  end
+
+  def is_special_item?(item)
+    SPECIAL_ITEMS.include?(item.name)
   end
 
   def is_less_than_fifty_quality?(item)
