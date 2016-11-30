@@ -23,36 +23,12 @@ describe GildedRose do
   backstage_pass_ten = Item.new(:backstage_pass, 10, 5)
   backstage_pass_five = Item.new(:backstage_pass, 5, 5)
   backstage_pass_zero = Item.new(:backstage_pass, 0, 5)
-
   conjured_item = Item.new(:conjured_item, 10, 5)
 
 
-  # describe "#update_quality" do
-  #   it "does not change the name" do
-  #     items = [Item.new("foo", 0, 0)]
-  #     gilded_rose = GildedRose.new(items).update_quality()
-  #     expect(items[0].name).to eq "fixme"
-  #   end
-  #   it 'is a test test' do
-  #     puts "hello"
-  #   end
-  # end
-
-  # describe "#adjust_quality" do
-  #   it "lowers the quality of a vanilla item by 1 under normal circumastances" do
-  #     expect{ gilded_rose.adjust_quality(vanilla_item) }.to change{vanilla_item.quality}.by -1
-  #   end
-  #   it "lowers the quality of a vanilla item by 2 when SellIn date has past" do
-  #     expect{ gilded_rose.adjust_quality(item_past_sell_in) }.to change{item_past_sell_in.quality}.by -2
-  #   end
-  #   it "does not lowers the quality of a vanilla item that has alreadt reached zero quality" do
-  #     expect{ gilded_rose.adjust_quality(item_of_zero_quality) }.to change{item_of_zero_quality.quality}.by 0
-  #   end
-  # end
-
-  context 'applying logic the logic to multiple items' do
+  context 'applying logic the logic to multiple special items' do
     describe 'quality of items' do
-      it 'reduces the quality of a vanilla item of fifty quality and in SellIn date by 1' do
+      it 'increases the quality of a aged brie by 1' do
         expect{ gilded_rose_2.apply_quality_logic }.to change { item_of_fifty_quality_2.quality }.by -1
       end
       it 'reduces the quality of a vanilla item by 1 in sell in date' do
@@ -141,6 +117,26 @@ describe GildedRose do
       it 'increases the pass\'s quality be zero once sell in date has past' do
         gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_zero)
         expect(backstage_pass_zero.quality).to eq 0
+      end
+    end
+    describe '#apply_backstage_pass_quality_logic' do
+      it 'increases the pass\'s quality by 1 when sell in is more than 10 ' do
+        expect { gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_eleven) }.to change{backstage_pass_eleven.quality}.by 1
+      end
+      it 'increases the pass\'s quality by 2 when sell in is 10 or less' do
+        expect { gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_ten) }.to change{backstage_pass_ten.quality}.by 2
+      end
+      it 'increases the pass\'s quality by 3 when sell in is 5 or less' do
+        expect { gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_five) }.to change{backstage_pass_five.quality}.by 3
+      end
+      it 'increases the pass\'s quality be zero once sell in date has past' do
+        gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_zero)
+        expect(backstage_pass_zero.quality).to eq 0
+      end
+    end
+    describe '#apply_conjured_item_quality_logic' do
+      it 'decreases the item\'s quality by 1' do
+        expect { gilded_rose.apply_conjured_item_quality_logic(conjured_item) }.to change{conjured_item.quality}.by -2
       end
     end
   end
