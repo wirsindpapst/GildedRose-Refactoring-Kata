@@ -10,22 +10,18 @@ class GildedRose
 
   def reduce_sell_in_value
     @items.each do |item|
-      item.sell_in -= 1 
+      item.sell_in -= 1
     end
   end
 
   def apply_quality_logic
     @items.each do |item|
-      initial_routing(item)
+      adjust_quality_of_vanilla_item(item)
     end
   end
 
-  def initial_routing(item)
-    adjust_quality_of_vanilla_item if is_less_than_fifty_quality(item)
-  end
-
   def adjust_quality_of_vanilla_item(item)
-    is_vanilla?(item) ? ( item.quality -= 1) : apply_past_sell_in_reduction_if_applicable(item)
+    is_vanilla?(item) ? (item.quality -= 1) : apply_past_sell_in_reduction_if_applicable(item)
   end
 
   def apply_past_sell_in_reduction_if_applicable(item)
