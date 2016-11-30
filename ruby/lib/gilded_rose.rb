@@ -39,7 +39,7 @@ class GildedRose
   ##### Not sure this is right
 
   def less_than_fifty_filter(item)
-    special_item_routing(item) if is_less_than_fifty_quality(item)
+    special_item_routing(item) if is_less_than_fifty_quality?(item)
   end
 
   def more_than_zero_filter(item)
@@ -57,7 +57,7 @@ class GildedRose
     when :backstage_pass
       apply_backstage_pass_quality_logic(item)
     when :conjured_item
-      apply_conjured_item_quality_logic
+      apply_conjured_item_quality_logic(item)
     end
   end
 
@@ -107,8 +107,10 @@ class GildedRose
     @items
   end
 
+end
 
-# 
+
+#
 #   def update_quality()
 #     @items.each do |item|
 #       if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"

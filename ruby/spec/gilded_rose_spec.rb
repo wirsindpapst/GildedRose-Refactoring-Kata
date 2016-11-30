@@ -25,20 +25,60 @@ describe GildedRose do
   backstage_pass_zero = Item.new(:backstage_pass, 0, 5)
   conjured_item = Item.new(:conjured_item, 10, 5)
 
+  aged_brie_2 = Item.new(:aged_brie, 10, 5)
+  sulfuras_2 = Item.new(:sulfuras, 10, 5)
+  backstage_pass_eleven_2 = Item.new(:backstage_pass, 11, 5)
+  backstage_pass_ten_2 = Item.new(:backstage_pass, 10, 5)
+  backstage_pass_five_2 = Item.new(:backstage_pass, 5, 5)
+  backstage_pass_zero_2 = Item.new(:backstage_pass, 0, 5)
+  conjured_item_2 = Item.new(:conjured_item, 10, 5)
+  special_items = [aged_brie_2, sulfuras_2, backstage_pass_eleven_2, backstage_pass_ten_2, backstage_pass_five_2, backstage_pass_zero_2, conjured_item_2]
+  gilded_rose_3 = GildedRose.new(special_items)
 
-  context 'applying logic the logic to multiple special items' do
+
+
+
+
+  context 'applying logic the logic to multiple vanilla items' do
     describe 'quality of items' do
       it 'increases the quality of a aged brie by 1' do
-        expect{ gilded_rose_2.apply_quality_logic }.to change { item_of_fifty_quality_2.quality }.by -1
+        expect{ gilded_rose_2.update_quality }.to change { item_of_fifty_quality_2.quality }.by -1
       end
       it 'reduces the quality of a vanilla item by 1 in sell in date' do
-        expect{ gilded_rose_2.apply_quality_logic }.to change { vanilla_item_2.quality }.by -1
+        expect{ gilded_rose_2.update_quality }.to change { vanilla_item_2.quality }.by -1
       end
       it 'reduces the quality of a vanilla item past SellIn date by 2' do
-        expect{ gilded_rose_2.apply_quality_logic }.to change { item_past_sell_in_2.quality }.by -2
+        expect{ gilded_rose_2.update_quality }.to change { item_past_sell_in_2.quality }.by -2
       end
       it 'reduces the quality of a vanilla item whose quality is zero by 0' do
-        expect{ gilded_rose_2.apply_quality_logic }.to change { item_past_sell_in_2.quality }.by 0
+        expect{ gilded_rose_2.update_quality }.to change { item_past_sell_in_2.quality }.by 0
+      end
+    end
+  end
+
+  context 'applying logic the correct logic to multiples special iitems items' do
+    describe 'quality of items' do
+      it 'increases the quality of a aged brie by 1' do
+        expect{ gilded_rose_3.update_quality }.to change { aged_brie_2.quality }.by -1
+      end
+      it 'reduces the quality conjured item by 2' do
+        expect{ gilded_rose_3.update_quality }.to change { conjured_item_2.quality }.by -2
+      end
+      it 'nothing to selfuras' do
+        expect{ gilded_rose_3.update_quality }.to change { sulfuras_2.quality }.by 0
+      end
+      it 'increases the quality of backstage pass by when the SellIn date is more than 10 days away' do
+        expect{ gilded_rose_3.update_quality }.to change { backstage_pass_eleven_2.quality }.by 1
+      end
+      it 'increases the quality of backstage pass by when the SellIn date is 10 or fewer days away' do
+        expect{ gilded_rose_3.update_quality }.to change { backstage_pass_ten_2.quality }.by 2
+      end
+      it 'increases the quality of backstage pass by when the SellIn date is 5 or fewer days away' do
+        expect{ gilded_rose_3.update_quality }.to change { backstage_pass_five_2.quality }.by 3
+      end
+      it 'sets the quality of backstage to zero when the SellIn date has past' do
+        gilded_rose_3.update_quality
+        expect(backstage_pass_zero_2.quality).to eq 0
       end
     end
   end
