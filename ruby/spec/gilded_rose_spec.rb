@@ -5,7 +5,7 @@ describe GildedRose do
   subject { described_class.new }
   vanilla_item = Item.new("vanilla item", 10, 5)
   item_of_zero_quality = Item.new("vanilla item", 10, 0)
-  item_past_sell_in = Item.new("vanilla item", -5, 5)
+  item_past_sell_in = Item.new("vanilla item", 0, 5)
   item_of_fifty_quality = Item.new("vanilla item", -5, 50)
   items = [vanilla_item, item_past_sell_in]
   gilded_rose = GildedRose.new(items)
@@ -32,6 +32,13 @@ describe GildedRose do
   #     expect{ gilded_rose.adjust_quality(item_of_zero_quality) }.to change{item_of_zero_quality.quality}.by 0
   #   end
   # end
+
+  describe 'reduce_sell_in_value' do
+    it 'reduces the sell in value of an item' do
+      expect { gilded_rose.reduce_sell_in_value }.to change{vanilla_item.sell_in}.by -1
+    end
+  end
+
 
   describe 'is_less_than_fifty_quality?' do
     it 'returns true if an item\'s quality is less than  fifty' do

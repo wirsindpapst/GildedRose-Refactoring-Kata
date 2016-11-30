@@ -2,8 +2,16 @@ class GildedRose
 
   attr_reader :items
 
+  SPECIAL_ITEMS = [:aged_Brie, :sulfuras, :backstage_pass, :conjured_item]
+
   def initialize(items)
     @items = items
+  end
+
+  def reduce_sell_in_value
+    @items.each do |item|
+      item.sell_in -= 1 
+    end
   end
 
   def apply_quality_logic
@@ -37,7 +45,7 @@ class GildedRose
   end
 
   def past_sell_in?(item)
-    item.sell_in < 0
+    item.sell_in <= 0
   end
 
   def items
