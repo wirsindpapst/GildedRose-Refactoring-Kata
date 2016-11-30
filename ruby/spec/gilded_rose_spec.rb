@@ -19,7 +19,11 @@ describe GildedRose do
 
   aged_brie = Item.new(:aged_brie, 10, 5)
   sulfuras = Item.new(:sulfuras, 10, 5)
-  backstage_pass = Item.new(:backstage_pass, 10, 5)
+  backstage_pass_eleven = Item.new(:backstage_pass, 11, 5)
+  backstage_pass_ten = Item.new(:backstage_pass, 10, 5)
+  backstage_pass_five = Item.new(:backstage_pass, 5, 5)
+  backstage_pass_zero = Item.new(:backstage_pass, 0, 5)
+
   conjured_item = Item.new(:conjured_item, 10, 5)
 
 
@@ -117,6 +121,26 @@ describe GildedRose do
     describe '#is_special_item?' do
       it 'returns true if the item has a special property' do
         expect(gilded_rose.is_special_item?(sulfuras)).to eq true
+      end
+    end
+    describe '#apply_aged_brie_quality_logic' do
+      it 'increases brie\'s quality by 1 when less than 50' do
+        expect { gilded_rose.apply_aged_brie_quality_logic(aged_brie) }.to change{aged_brie.quality}.by 1
+      end
+    end
+    describe '#apply_backstage_pass_quality_logic' do
+      it 'increases the pass\'s quality by 1 when sell in is more than 10 ' do
+        expect { gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_eleven) }.to change{backstage_pass_eleven.quality}.by 1
+      end
+      it 'increases the pass\'s quality by 2 when sell in is 10 or less' do
+        expect { gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_ten) }.to change{backstage_pass_ten.quality}.by 2
+      end
+      it 'increases the pass\'s quality by 3 when sell in is 5 or less' do
+        expect { gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_five) }.to change{backstage_pass_five.quality}.by 3
+      end
+      it 'increases the pass\'s quality be zero once sell in date has past' do
+        gilded_rose.apply_backstage_pass_quality_logic(backstage_pass_zero)
+        expect(backstage_pass_zero.quality).to eq 0
       end
     end
   end

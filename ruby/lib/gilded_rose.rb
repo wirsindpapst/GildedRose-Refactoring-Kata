@@ -21,7 +21,7 @@ class GildedRose
   end
 
   def apply_initial_routing(item)
-    is_special_item?(item) ? ( "Placeholder") : ( adjust_quality_of_vanilla_item(item))
+    is_special_item?(item) ? (less_than_fifty_filter(item)) : ( adjust_quality_of_vanilla_item(item))
   end
 
   def adjust_quality_of_vanilla_item(item)
@@ -34,6 +34,37 @@ class GildedRose
 
   def is_special_item?(item)
     SPECIAL_ITEMS.include?(item.name)
+  end
+
+  def less_than_fifty_filter(item)
+    special_item_routing(item) if is_less_than_fifty_quality(item) || item.name = :conjured_item
+  end
+
+  def special_item_routing(item)
+    case item.name
+    when :aged_brie
+      apply_aged_brie_quality_logic(item)
+    when :backstage_pass
+      apply_backstage_pass_quality_logic(item)
+    when :conjured_item
+      apply_conjured_item_quality_logic
+    end
+  end
+
+  def apply_backstage_pass_quality_logic(item)
+    if item.sell_in > 10
+      item.quality +=1
+    elsif item.sell_in > 5
+      item.quality += 2
+    elsif item.sell_in > 0
+      item.quality += 3
+    else
+      item.quality = 0
+    end
+  end
+
+  def apply_aged_brie_quality_logic(item)
+    item.quality += 1
   end
 
   def is_less_than_fifty_quality?(item)
